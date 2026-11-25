@@ -16,9 +16,10 @@ def main() -> None:
     path = os.path.join(out_dir, "entry.txt")
     with open(path, "w", encoding="utf-8") as f:
         f.write(LINE)
-    with open(path, encoding="utf-8") as f:
-        written = f.read()
-    assert written == LINE, "entry.txt content mismatch"
+    with open(path, "rb") as f:
+        written_bytes = f.read()
+    assert written_bytes == LINE.encode("utf-8"), "entry.txt bytes mismatch"
+    written = written_bytes.decode("utf-8")
     assert 1 <= len(written) <= 160, "gate: entry must be 1-160 characters"
     assert written == written.strip(), "gate: no leading/trailing whitespace"
     assert "\n" not in written, "gate: entry must be a single line"
